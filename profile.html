@@ -79,7 +79,6 @@
     </div>
 
     <script>
-        // Load dữ liệu từ localStorage
         window.onload = function() {
             const savedData = JSON.parse(localStorage.getItem('profileData')) || {};
             if (savedData.avatar) document.getElementById('profile-avatar').src = savedData.avatar;
@@ -90,7 +89,7 @@
                 };
             }
             document.getElementById('about-me-btn').onclick = function() {
-                location.href = 'aboutme.html';
+                location.href = 'https://tulong10.github.io/digital-card/aboutme.html';
             };
             updateLinks(savedData.links || []);
         };
@@ -104,7 +103,7 @@
                 button.className = 'link-button';
                 button.innerHTML = `<i class="${platform.icon}"></i> ${platform.name}`;
                 button.onclick = function() {
-                    location.href = link;
+                    window.open(link, '_blank');
                 };
                 linkButtonsDiv.appendChild(button);
                 linkButtonsDiv.appendChild(document.createElement('br'));
