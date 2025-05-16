@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thông tin cá nhân</title>
+    <title>Profile Card</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
-
     <style>
         body {
             height: 100vh;
@@ -18,31 +16,26 @@
             align-items: center;
             background-image: radial-gradient(hsl(189, 88%, 74%), rgb(53, 110, 156));
             color: white;
-            overflow-x: hidden;
             font-family: 'Lora', serif;
         }
-
         .container {
             text-align: center;
-            padding: 20px;
-            width: 100%;
+            padding-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-
         .avatar {
             border-radius: 50%;
-            display: block;
-            margin: 0 auto;
             width: 100px;
             height: 100px;
             object-fit: cover;
             border: 1px solid #55afeb;
         }
-
         .avatar:hover {
             transform: scale(1.1);
             box-shadow: 0px 10px 30px rgba(20, 127, 189, 0.493);
         }
-
         h3 {
             font-family: 'Merriweather', serif;
             font-weight: bold;
@@ -50,21 +43,6 @@
             margin: 10px 0 8px 0;
             color: #ffffff;
         }
-
-        .grid-container {
-            margin-right: 50px;
-            display: grid;
-            grid-template-columns: auto 1fr;
-            align-items: center;
-            justify-items: center;
-            text-align: center;
-        }
-
-        .grid-container i {
-            margin-left: 50px;
-            justify-self: flex-start;
-        }
-
         .link-button {
             margin-bottom: 10px;
             background-color: white;
@@ -76,73 +54,47 @@
             font-weight: bold;
             font-size: 15px;
             transition-duration: 0.3s;
-            transition-property: color, background-color, transform, box-shadow;
             box-shadow: 0px 11px 22px -9px #000000;
             cursor: pointer;
         }
-
         .link-button:hover {
             color: white;
             background-color: rgb(7, 85, 158);
             transform: scale(1.1);
             box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.5);
         }
-
-        .about-me {
-            font-family: 'Times New Roman', Times, serif;
-            color: #ffffff;
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-
-        @media only screen and (max-width: 600px) {
-            .container {
-                padding-top: 50px;
-            }
-
-            .avatar {
-                width: 100px;
-                height: 100px;
-            }
-
-            h3 {
-                font-size: 20px;
-            }
-        }
     </style>
 </head>
-
 <body>
     <div class="container">
         <img class="avatar" id="profile-avatar" src="./1.jpg" alt="Avatar">
         <h3 id="profile-name">Tử Long</h3>
-        <div class="about-me" id="profile-about-me">🌟 Follow me!</div>
+        <button class="link-button" id="about-me-btn">
+            <i class="fas fa-user"></i> About me
+        </button>
         <button class="link-button" id="phone-button">
-            <div class="grid-container">
-                <i class="fas fa-phone-alt"></i> Call Me
-            </div>
-        </button><br>
+            <i class="fas fa-phone-alt"></i> Call Me
+        </button>
         <div id="link-buttons"></div>
     </div>
 
     <script>
-        // Load dữ liệu từ localStorage khi trang được tải
-        window.onload = function () {
+        // Load dữ liệu từ localStorage
+        window.onload = function() {
             const savedData = JSON.parse(localStorage.getItem('profileData')) || {};
-            document.getElementById('profile-avatar').src = savedData.avatar || './1.jpg';
+            if (savedData.avatar) document.getElementById('profile-avatar').src = savedData.avatar;
             document.getElementById('profile-name').textContent = savedData.name || 'Tử Long';
-            document.getElementById('profile-about-me').textContent = savedData.aboutMe || '🌟 Follow me!';
             if (savedData.phone) {
-                document.getElementById('phone-button').onclick = function () {
+                document.getElementById('phone-button').onclick = function() {
                     location.href = `tel:${savedData.phone}`;
                 };
-            } else {
-                document.getElementById('phone-button').style.display = 'none';
             }
+            document.getElementById('about-me-btn').onclick = function() {
+                location.href = 'aboutme.html';
+            };
             updateLinks(savedData.links || []);
         };
 
-        // Hàm cập nhật các nút liên kết
         function updateLinks(links) {
             const linkButtonsDiv = document.getElementById('link-buttons');
             linkButtonsDiv.innerHTML = '';
@@ -150,12 +102,8 @@
                 const platform = getPlatformInfo(link);
                 const button = document.createElement('button');
                 button.className = 'link-button';
-                button.innerHTML = `
-                    <div class="grid-container">
-                        <i class="${platform.icon}"></i> ${platform.name}
-                    </div>
-                `;
-                button.onclick = function () {
+                button.innerHTML = `<i class="${platform.icon}"></i> ${platform.name}`;
+                button.onclick = function() {
                     location.href = link;
                 };
                 linkButtonsDiv.appendChild(button);
@@ -163,7 +111,6 @@
             });
         }
 
-        // Hàm nhận diện biểu tượng và tên nền tảng
         function getPlatformInfo(url) {
             if (url.includes('facebook.com')) return { icon: 'fab fa-facebook', name: 'Facebook' };
             if (url.includes('tiktok.com')) return { icon: 'fab fa-tiktok', name: 'TikTok' };
@@ -174,5 +121,4 @@
         }
     </script>
 </body>
-
 </html>
