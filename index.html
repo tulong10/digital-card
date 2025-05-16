@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Card</title>
+    <title>Thẻ kết nối điện tử</title>
+    <link rel="icon" href="./1.jpg" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+
     <style>
         body {
             height: 100vh;
@@ -16,26 +19,34 @@
             align-items: center;
             background-image: radial-gradient(hsl(189, 88%, 74%), rgb(53, 110, 156));
             color: white;
+            overflow-x: hidden;
             font-family: 'Lora', serif;
         }
+
         .container {
             text-align: center;
             padding-top: 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100%;
         }
+
         .avatar {
             border-radius: 50%;
+            display: block;
+            margin: 0 auto;
             width: 100px;
             height: 100px;
             object-fit: cover;
             border: 1px solid #55afeb;
         }
+
         .avatar:hover {
             transform: scale(1.1);
             box-shadow: 0px 10px 30px rgba(20, 127, 189, 0.493);
         }
+
         h3 {
             font-family: 'Merriweather', serif;
             font-weight: bold;
@@ -43,6 +54,21 @@
             margin: 10px 0 8px 0;
             color: #ffffff;
         }
+
+        .grid-container {
+            margin-right: 50px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            align-items: center;
+            justify-items: center;
+            text-align: center;
+        }
+
+        .grid-container i {
+            margin-left: 50px;
+            justify-self: flex-start;
+        }
+
         .link-button {
             margin-bottom: 10px;
             background-color: white;
@@ -54,234 +80,232 @@
             font-weight: bold;
             font-size: 15px;
             transition-duration: 0.3s;
+            transition-property: color, background-color, transform, box-shadow;
             box-shadow: 0px 11px 22px -9px #000000;
             cursor: pointer;
         }
+
         .link-button:hover {
             color: white;
             background-color: rgb(7, 85, 158);
             transform: scale(1.1);
             box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.5);
         }
-        .edit-button {
+
+        #qrcode {
+            margin-top: 20px;
+            display: none;
+            position: relative;
+        }
+
+        #qrcode img {
+            border: 2px solid #55afeb;
+            border-radius: 10px;
+            padding: 5px;
+            background: white;
+            width: 150px;
+            height: 150px;
+        }
+
+        #save-qr-btn {
+            background-color: rgb(7, 85, 158);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #save-qr-btn:hover {
+            background-color: rgb(5, 65, 120);
+        }
+
+        #input-form {
+            display: none;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            color: black;
+            font-family: 'Lora', serif;
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        #input-form.active {
+            display: block;
+        }
+
+        #input-form h4 {
+            margin: 0 0 15px 0;
+            font-weight: bold;
+        }
+
+        #input-form input,
+        #input-form textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        #input-form button {
+            background-color: rgb(7, 85, 158);
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Lora', serif;
+            font-weight: bold;
+        }
+
+        #input-form button:hover {
+            background-color: rgb(5, 65, 120);
+        }
+
+        #add-link-btn {
+            background-color: rgb(7, 85, 158);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #add-link-btn:hover {
+            background-color: rgb(5, 65, 120);
+        }
+
+        #create-card-btn {
+            background-color: white;
             border: 0;
-            padding: 10px 15px;
+            padding: 10px 20px;
             border-radius: 100px;
             font-family: 'Lora', serif;
             font-weight: bold;
             font-size: 15px;
-            background-color: white;
             transition-duration: 0.3s;
+            transition-property: color, background-color, transform, box-shadow;
+            box-shadow: 0px 11px 22px -9px #000000;
             cursor: pointer;
-        }
-        .edit-button:hover {
-            background-color: rgb(7, 85, 158);
-            color: white;
-            transform: scale(1.1);
-        }
-        #form-container {
-            display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
+            bottom: 20px;
+            right: 20px;
         }
-        #form-container form {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 400px;
-            color: black;
-            font-family: 'Lora', serif;
-        }
-        #form-container input,
-        #form-container textarea {
-            width: 100%;
-            margin: 10px 0;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-family: 'Lora', serif;
-        }
-        #form-container button {
-            margin: 5px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: rgb(7, 85, 158);
+
+        #create-card-btn:hover {
             color: white;
-            font-family: 'Lora', serif;
-            cursor: pointer;
-        }
-        #form-container button:hover {
-            background-color: rgb(5, 60, 112);
-        }
-        #qrcode {
-            display: none;
-            margin-top: 20px;
-        }
-        #qrcode button {
-            margin-top: 10px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
             background-color: rgb(7, 85, 158);
-            color: white;
-            font-family: 'Lora', serif;
-            cursor: pointer;
+            transform: scale(1.1);
+            box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.5);
         }
-        #qrcode button:hover {
-            background-color: rgb(5, 60, 112);
+
+        @media only screen and (max-width: 600px) {
+            .container {
+                padding-top: 50px;
+            }
+
+            .avatar {
+                width: 100px;
+                height: 100px;
+            }
+
+            h3 {
+                font-size: 20px;
+            }
+
+            #input-form {
+                width: 90%;
+            }
+
+            #create-card-btn {
+                width: 200px;
+                padding: 8px 15px;
+            }
+
+            #qrcode img {
+                width: 120px;
+                height: 120px;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <img class="avatar" id="avatar" src="./1.jpg" alt="Avatar">
-        <h3 id="name">Tử Long</h3>
-        <button class="link-button" id="about-me-btn">
-            <i class="fas fa-user"></i> About me
-        </button>
-        <button class="link-button" id="phone-button">
-            <i class="fas fa-phone-alt"></i> Call Me
-        </button>
+        <!-- Thẻ thông tin cá nhân -->
+        <img class="avatar" id="profile-avatar" src="./1.jpg" alt="Avatar">
+        <h3 id="profile-name">Tử Long</h3>
+
+        <button class="link-button" onclick="location.href='aboutme.html'">
+            <div class="grid-container">
+                <i class="fas fa-user" style="color: black;"></i> About me
+            </div>
+        </button><br>
+        <button class="link-button" id="phone-button" onclick="location.href='tel:+84367477122'">
+            <div class="grid-container">
+                <i class="fas fa-phone-alt"></i> Call Me
+            </div>
+        </button><br>
         <div id="link-buttons"></div>
+        <div id="qrcode"></div>
+        <button id="create-card-btn" onclick="showForm()">Tạo thẻ</button>
     </div>
 
-    <button class="edit-button" onclick="showForm()">Tạo thẻ</button>
-
-    <div id="form-container">
-        <form id="profile-form">
-            <h3>Tạo thẻ thông tin</h3>
-            <label>Ảnh đại diện:</label>
-            <input type="file" id="avatar-input" accept="image/*">
-            <label>Tên của bạn:</label>
-            <input type="text" id="name-input" placeholder="Nhập tên">
-            <label>Giới thiệu về bạn:</label>
-            <textarea id="about-input" placeholder="Giới thiệu bản thân"></textarea>
-            <label>Số điện thoại:</label>
-            <input type="tel" id="phone-input" placeholder="Nhập số điện thoại">
-            <div id="links-container">
-                <label>Liên kết:</label>
-                <input type="url" class="link-input" placeholder="Nhập liên kết (VD: Facebook, TikTok)">
-            </div>
-            <button type="button" onclick="addLink()">Thêm liên kết</button>
-            <button type="button" onclick="saveProfile()">Lưu thẻ</button>
-            <button type="button" onclick="generateQR()">Tạo QR Code</button>
-            <button type="button" onclick="hideForm()">Đóng</button>
-            <div id="qrcode"></div>
-        </form>
+    <div id="input-form">
+        <h4>Tạo thẻ thông tin cá nhân</h4>
+        <input type="file" id="avatar-upload" accept="image/*">
+        <input type="text" id="name" placeholder="Tên của bạn">
+        <textarea id="about-me" placeholder="Giới thiệu về bạn (About me)" required></textarea>
+        <input type="tel" id="phone" placeholder="Số điện thoại (VD: +84367477122)" required>
+        <div id="link-inputs">
+            <input type="text" class="link-input" placeholder="Liên kết 1 (VD: Facebook)">
+        </div>
+        <button type="button" id="add-link-btn" onclick="addLinkInput()">Thêm liên kết</button>
+        <button onclick="updateProfile()">Lưu thẻ</button>
+        <button onclick="generateQR()">Tạo QR Code</button>
+        <button onclick="hideForm()">Hủy</button>
     </div>
 
     <script>
-        window.onload = function() {
+        // Load dữ liệu từ localStorage khi trang được tải
+        window.onload = function () {
             const savedData = JSON.parse(localStorage.getItem('profileData')) || {};
-            if (savedData.avatar) document.getElementById('avatar').src = savedData.avatar;
-            document.getElementById('name').textContent = savedData.name || 'Tử Long';
+            if (savedData.avatar) {
+                document.getElementById('profile-avatar').src = savedData.avatar;
+            }
+            document.getElementById('profile-name').textContent = savedData.name || 'Tử Long';
             if (savedData.phone) {
-                document.getElementById('phone-button').onclick = function() {
+                document.getElementById('phone-button').onclick = function () {
                     location.href = `tel:${savedData.phone}`;
                 };
             }
-            document.getElementById('about-me-btn').onclick = function() {
-                location.href = 'aboutme.html';
-            };
             updateLinks(savedData.links || []);
         };
 
-        function showForm() {
-            const formContainer = document.getElementById('form-container');
-            formContainer.style.display = 'flex';
-            const savedData = JSON.parse(localStorage.getItem('profileData')) || {};
-            document.getElementById('name-input').value = savedData.name || '';
-            document.getElementById('about-input').value = savedData.about || '';
-            document.getElementById('phone-input').value = savedData.phone || '';
-            const linksContainer = document.getElementById('links-container');
-            linksContainer.innerHTML = '<label>Liên kết:</label>';
-            (savedData.links || []).forEach(link => {
-                linksContainer.innerHTML += `<input type="url" class="link-input" value="${link}" placeholder="Nhập liên kết (VD: Facebook, TikTok)">`;
-            });
-            if (!(savedData.links && savedData.links.length)) {
-                linksContainer.innerHTML += `<input type="url" class="link-input" placeholder="Nhập liên kết (VD: Facebook, TikTok)">`;
-            }
-        }
-
-        function hideForm() {
-            document.getElementById('form-container').style.display = 'none';
-            document.getElementById('qrcode').style.display = 'none';
-        }
-
-        function addLink() {
-            const linksContainer = document.getElementById('links-container');
-            linksContainer.innerHTML += `<input type="url" class="link-input" placeholder="Nhập liên kết (VD: Facebook, TikTok)">`;
-        }
-
-        function saveProfile() {
-            const avatarInput = document.getElementById('avatar-input');
-            const nameInput = document.getElementById('name-input').value;
-            const aboutInput = document.getElementById('about-input').value;
-            const phoneInput = document.getElementById('phone-input').value;
-            const linkInputs = document.getElementsByClassName('link-input');
-            const links = Array.from(linkInputs).map(input => input.value).filter(link => link.trim() !== '');
-
-            const profileData = {
-                name: nameInput,
-                about: aboutInput,
-                phone: phoneInput,
-                links: links
-            };
-
-            if (avatarInput.files && avatarInput.files[0]) {
+        // Hàm xử lý tải ảnh và chuyển thành base64
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    profileData.avatar = e.target.result;
-                    localStorage.setItem('profileData', JSON.stringify(profileData));
-                    updateProfile(profileData);
+                    localStorage.setItem('profileAvatar', e.target.result);
+                    document.getElementById('profile-avatar').src = e.target.result;
                 };
-                reader.readAsDataURL(avatarInput.files[0]);
-            } else {
-                const savedData = JSON.parse(localStorage.getItem('profileData')) || {};
-                profileData.avatar = savedData.avatar || './1.jpg';
-                localStorage.setItem('profileData', JSON.stringify(profileData));
-                updateProfile(profileData);
+                reader.readAsDataURL(file);
             }
         }
 
-        function updateProfile(data) {
-            if (data.avatar) document.getElementById('avatar').src = data.avatar;
-            document.getElementById('name').textContent = data.name || 'Tử Long';
-            if (data.phone) {
-                document.getElementById('phone-button').onclick = function() {
-                    location.href = `tel:${data.phone}`;
-                };
-            }
-            updateLinks(data.links || []);
-        }
-
-        function updateLinks(links) {
-            const linkButtonsDiv = document.getElementById('link-buttons');
-            linkButtonsDiv.innerHTML = '';
-            links.forEach(link => {
-                const platform = getPlatformInfo(link);
-                const button = document.createElement('button');
-                button.className = 'link-button';
-                button.innerHTML = `<i class="${platform.icon}"></i> ${platform.name}`;
-                button.onclick = function() {
-                    location.href = link;
-                };
-                linkButtonsDiv.appendChild(button);
-                linkButtonsDiv.appendChild(document.createElement('br'));
-            });
-        }
-
+        // Hàm nhận diện biểu tượng và tên nền tảng
         function getPlatformInfo(url) {
             if (url.includes('facebook.com')) return { icon: 'fab fa-facebook', name: 'Facebook' };
             if (url.includes('tiktok.com')) return { icon: 'fab fa-tiktok', name: 'TikTok' };
@@ -291,38 +315,137 @@
             return { icon: 'fas fa-link', name: 'Link' };
         }
 
+        // Hàm hiển thị/hide form
+        function showForm() {
+            document.getElementById('input-form').classList.add('active');
+        }
+
+        function hideForm() {
+            document.getElementById('input-form').classList.remove('active');
+        }
+
+        // Hàm thêm ô nhập liên kết
+        function addLinkInput() {
+            const linkInputs = document.getElementById('link-inputs');
+            const newInput = document.createElement('input');
+            newInput.type = 'text';
+            newInput.className = 'link-input';
+            newInput.placeholder = `Liên kết ${linkInputs.children.length + 1} (VD: Facebook)`;
+            linkInputs.appendChild(newInput);
+        }
+
+        // Hàm cập nhật thông tin cá nhân
+        function updateProfile() {
+            const avatarInput = document.getElementById('avatar-upload');
+            const name = document.getElementById('name').value;
+            const aboutMe = document.getElementById('about-me').value;
+            const phone = document.getElementById('phone').value;
+
+            // Kiểm tra bắt buộc nhập About Me và Điện thoại
+            if (!aboutMe || !phone) {
+                alert('Vui lòng nhập đầy đủ About Me và số điện thoại!');
+                return;
+            }
+
+            if (avatarInput.files[0]) {
+                handleImageUpload({ target: avatarInput });
+            }
+            const links = Array.from(document.getElementsByClassName('link-input'))
+                .map(input => input.value)
+                .filter(link => link.trim() !== '');
+
+            const profileData = {
+                avatar: localStorage.getItem('profileAvatar') || './1.jpg',
+                name: name || 'Tử Long',
+                aboutMe: aboutMe || '🌟 Follow me!',
+                phone: phone,
+                links: links
+            };
+            localStorage.setItem('profileData', JSON.stringify(profileData));
+
+            document.getElementById('profile-name').textContent = name || 'Tử Long';
+            document.getElementById('phone-button').onclick = function () {
+                location.href = `tel:${phone}`;
+            };
+            updateLinks(links);
+            hideForm();
+        }
+
+        // Hàm cập nhật các nút liên kết
+        function updateLinks(links) {
+            const linkButtonsDiv = document.getElementById('link-buttons');
+            linkButtonsDiv.innerHTML = '';
+            links.forEach(link => {
+                const platform = getPlatformInfo(link);
+                const button = document.createElement('button');
+                button.className = 'link-button';
+                button.innerHTML = `
+                    <div class="grid-container">
+                        <i class="${platform.icon}"></i> ${platform.name}
+                    </div>
+                `;
+                button.onclick = function () {
+                    location.href = link;
+                };
+                linkButtonsDiv.appendChild(button);
+                linkButtonsDiv.appendChild(document.createElement('br'));
+            });
+        }
+
+        // Hàm tạo QR Code bằng API qrserver.com
         function generateQR() {
             const qrcodeDiv = document.getElementById('qrcode');
-            qrcodeDiv.innerHTML = '';
+            qrcodeDiv.innerHTML = ''; // Xóa nội dung cũ
+            const savedData = JSON.parse(localStorage.getItem('profileData')) || {};
+
+            // URL của profile.html trên GitHub Pages (thay bằng URL thực tế của bạn)
             const profileUrl = 'https://tulong10.github.io/digital-card/profile.html';
+
             try {
+                // Tạo URL cho API qrserver.com
                 const encodedData = encodeURIComponent(profileUrl);
                 const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodedData}&color=1E40AF&bgcolor=FFFFFF`;
+
+                // Tạo thẻ img để hiển thị mã QR
                 const qrImg = document.createElement('img');
                 qrImg.src = qrUrl;
                 qrImg.alt = 'Mã QR';
                 qrImg.onerror = function() {
                     alert('Không thể tạo mã QR. Vui lòng kiểm tra kết nối Internet và thử lại!');
                 };
+
+                // Thêm mã QR và nút lưu vào giao diện
                 qrcodeDiv.appendChild(qrImg);
                 qrcodeDiv.innerHTML += `
                     <button id="save-qr-btn" onclick="saveQR()">Lưu QR</button>
                 `;
                 qrcodeDiv.style.display = 'block';
-                hideForm();
+                hideForm(); // Ẩn form sau khi tạo QR
             } catch (error) {
                 console.error('Lỗi khi tạo mã QR:', error);
                 alert('Không thể tạo mã QR. Vui lòng kiểm tra kết nối Internet và thử lại!');
             }
         }
 
+        // Hàm lưu mã QR và ẩn mã QR
         function saveQR() {
-            const qrImg = document.querySelector('#qrcode img');
-            const link = document.createElement('a');
-            link.href = qrImg.src;
-            link.download = 'qrcode.png';
-            link.click();
+            const qrImg = document.getElementById('qrcode').getElementsByTagName('img')[0];
+            const qrcodeDiv = document.getElementById('qrcode');
+            if (qrImg) {
+                const link = document.createElement('a');
+                link.href = qrImg.src;
+                link.download = 'qrcode.png';
+                link.click();
+                // Ẩn mã QR và nút "Lưu QR" sau khi lưu
+                qrcodeDiv.style.display = 'none';
+            } else {
+                alert('Không tìm thấy mã QR để lưu. Vui lòng tạo lại!');
+            }
         }
+
+        // Gán sự kiện cho input file
+        document.getElementById('avatar-upload').addEventListener('change', handleImageUpload);
     </script>
 </body>
+
 </html>
